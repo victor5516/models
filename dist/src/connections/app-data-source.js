@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectToDB = void 0;
+exports.setupTestDB = exports.connectToDB = void 0;
 const typeorm_1 = require("typeorm");
 const connectToDB = (dbConfig) => __awaiter(void 0, void 0, void 0, function* () {
     const myDataSource = new typeorm_1.DataSource({
-        type: "postgres",
+        type: dbConfig.type,
         host: dbConfig.host,
         port: dbConfig.port,
         username: dbConfig.username,
@@ -27,3 +27,14 @@ const connectToDB = (dbConfig) => __awaiter(void 0, void 0, void 0, function* ()
     return connection;
 });
 exports.connectToDB = connectToDB;
+const setupTestDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const myDataSource = new typeorm_1.DataSource({
+        type: 'better-sqlite3',
+        database: ':memory:',
+        entities: [__dirname + "/../entity/*.entity.js"],
+        synchronize: true
+    });
+    const connection = yield myDataSource.initialize();
+    return connection;
+});
+exports.setupTestDB = setupTestDB;
