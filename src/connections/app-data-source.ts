@@ -6,7 +6,7 @@ export  const connectToDB = async (dbConfig: any) => {
 
 
 const myDataSource = new DataSource({
-    type: dbConfig.type,
+    type: "postgres",
     host: dbConfig.host,
     port: dbConfig.port,
     username: dbConfig.username,
